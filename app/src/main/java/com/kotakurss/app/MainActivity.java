@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.kotakurss.app.rss.RSSFeedParser;
 
+import java.util.concurrent.ExecutionException;
+
 public class MainActivity extends Activity {
 
     static final String RSS_URL = "http://kotaku.com/rss";
@@ -17,7 +19,14 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         RSSFeedParser feedParser = new RSSFeedParser();
-        feedParser.execute(RSS_URL);
+
+        try {
+            feedParser.execute(RSS_URL).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
