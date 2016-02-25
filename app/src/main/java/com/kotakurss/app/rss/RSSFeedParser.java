@@ -91,15 +91,12 @@ public class RSSFeedParser extends AsyncTask<String, Void, Feed> {
 
     private void checkCurrentTagText(String tagName, String tagText) {
         if(tagName.equals(TITLE)){
-//            Log.i(LOG_TAG, tagText);
             this.parsedTitle = tagText;
         }
         if(tagName.equals(LINK)){
-//            Log.i(LOG_TAG, tagText);
             this.parsedLink = tagText;
         }
         if(tagName.equals(DESCRIPTION)){
-//            Log.i(LOG_TAG, tagText);
             this.parsedDescription = tagName;
 
             addMessage();
@@ -114,7 +111,6 @@ public class RSSFeedParser extends AsyncTask<String, Void, Feed> {
     private Feed getFeed() {
         for (FeedMessage message : this.feed.getMessages())
             Log.i(LOG_TAG, message.getTitle());
-//            Log.i(LOG_TAG, message.getTitle() +" "+ message.getLink());
         return this.feed;
     }
 
