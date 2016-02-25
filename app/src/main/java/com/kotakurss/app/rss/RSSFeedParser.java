@@ -8,6 +8,8 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RSSFeedParser extends AsyncTask<String, Void, Feed> {
 
@@ -15,13 +17,18 @@ public class RSSFeedParser extends AsyncTask<String, Void, Feed> {
     private final String TITLE = "title";
     private final String LINK = "link";
     private final String DESCRIPTION = "description";
+    private final String PUBDATE = "pubDate";
+    private static final String IMG_URL_PATTERN = ".*\\<img\\s*src\\s*=\\s*\\\"(.*?)\\\".*";
+    private static final int MATCHED_GROUP = 1;
 
     private final int CURRENT_URL = 0;
     private final int TRUE_XML_ITEM_DEPTH = 4;
 
     private String parsedTitle = "";
+    private String parsedImgUrl = "";
     private String parsedLink = "";
     private String parsedDescription = "";
+    private String parsedDate = "";
 
     private Feed feed = new Feed();
 
@@ -97,21 +104,52 @@ public class RSSFeedParser extends AsyncTask<String, Void, Feed> {
             this.parsedLink = tagText;
         }
         if(tagName.equals(DESCRIPTION)){
-            this.parsedDescription = tagName;
+            this.parsedDescription = tagText;
+
+            if(isMatchImgUrlFromDescription(tagText))
+                this.parsedImgUrl = getImgUrlFromDescription(tagText);
+            else {
+                this.parsedImgUrl = "";
+            }
+        }
+        if(tagName.equals(PUBDATE)){
+            this.parsedDate = tagText;
 
             addMessage();
         }
     }
 
     private void addMessage() {
-        FeedMessage feedMessage = new FeedMessage(this.parsedTitle, this.parsedDescription, this.parsedLink);
+        FeedMessage feedMessage = new FeedMessage(this.parsedTitle, this.parsedDescription, this.parsedLink, this.parsedDate, this.parsedImgUrl);
         feed.getMessages().add(feedMessage);
     }
 
     private Feed getFeed() {
-        for (FeedMessage message : this.feed.getMessages())
-            Log.i(LOG_TAG, message.getTitle());
+//        for (FeedMessage message : this.feed.getMessages())
+//            Log.i(LOG_TAG, message.getTitle());
         return this.feed;
     }
+
+    public boolean isMatchImgUrlFromDescription(String parsedDescription){
+//        Pattern p = Pattern.compile(IMG_URL_PATTERN);
+//        Matcher m = p.matcher(parsedDescription);
+//Log.i(LOG_TAG, parsedDescription + parsedDescription.matches(IMG_URL_PATTERN));
+        return parsedDescription.matches(IMG_URL_PATTERN);
+    }
+
+    private String getImgUrlFromDescription(String parsedDescription) {
+        String matchedUrl = "";
+
+        Pattern regexp = Pattern.compile(IMG_URL_PATTERN);
+        Matcher m = regexp.matcher(parsedDescription);
+
+        while (m.find()) {
+//            Log.i(LOG_TAG, m.group(MATCHED_GROUP));
+            matchedUrl = m.group(MATCHED_GROUP);
+        }
+
+        return matchedUrl;
+    }
+
 
 }

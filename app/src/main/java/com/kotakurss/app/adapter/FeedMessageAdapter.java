@@ -1,14 +1,22 @@
 package com.kotakurss.app.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.kotakurss.app.R;
+import com.kotakurss.app.image.DownloadAsyncTask;
+import com.kotakurss.app.image.ViewHolder;
 import com.kotakurss.app.rss.FeedMessage;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 public class FeedMessageAdapter extends BaseAdapter {
@@ -41,13 +49,22 @@ public class FeedMessageAdapter extends BaseAdapter {
         View view = convertView;
 
         if(view == null) {
-            view = layoutInflater.inflate(R.layout.item_layout, parent, false);
+            view = layoutInflater.inflate(R.layout.item_layout_pro, parent, false);
         }
 
         FeedMessage feedMessage = getFeedMessage(position);
 
-        TextView textView = (TextView) view.findViewById(R.id.textView);
-        textView.setText(feedMessage.getTitle());
+        TextView textViewTitle = (TextView) view.findViewById(R.id.title);
+        textViewTitle.setText(feedMessage.getTitle());
+
+        TextView textViewDate = (TextView) view.findViewById(R.id.date);
+        textViewDate.setText(feedMessage.getDate());
+
+        ImageView imageView = (ImageView) view.findViewById(R.id.picture);
+        imageView.setImageResource(R.mipmap.android);
+//        ViewHolder viewHolder = new ViewHolder(imageView, feedMessage.getImgUrl());
+
+//        new DownloadAsyncTask().execute(viewHolder);
 
         return view;
     }

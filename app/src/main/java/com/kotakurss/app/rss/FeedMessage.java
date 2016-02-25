@@ -5,11 +5,15 @@ public class FeedMessage {
     private String title;
     private String description;
     private String link;
+    private String date;
+    private String imgUrl;
 
-    public FeedMessage(String title, String description, String link) {
+    public FeedMessage(String title, String description, String link, String date, String imgUrl) {
         this.title = title;
         this.description = description;
         this.link = link;
+        this.date = date;
+        this.imgUrl = imgUrl;
     }
 
     public String getTitle() {
@@ -34,5 +38,21 @@ public class FeedMessage {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }
