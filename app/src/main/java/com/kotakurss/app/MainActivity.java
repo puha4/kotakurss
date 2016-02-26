@@ -2,6 +2,8 @@ package com.kotakurss.app;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import com.kotakurss.app.adapter.FeedMessageAdapter;
 import com.kotakurss.app.rss.Feed;
@@ -26,6 +29,8 @@ public class MainActivity extends Activity {
     private Feed feed;
     private ListView rssListView;
     private WebView webView;
+    private EditText inputSearch;
+    private FeedMessageAdapter messageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,26 +38,48 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         rssListView = (ListView) findViewById(R.id.rssListView);
+        inputSearch = (EditText) findViewById(R.id.searchInput);
         webView = (WebView) findViewById(R.id.webView);
         webView.getSettings().setJavaScriptEnabled(true);
 
-        feed = getFeed();
+        initRssList();
 
-        List <FeedMessage> feedMessagesList = feed.getMessages();
+        inputSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        FeedMessageAdapter messageAdapter = new FeedMessageAdapter(this, feedMessagesList);
+            }
 
-        rssListView.setAdapter(messageAdapter);
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                messageAdapter.getFilter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
 
         rssListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FeedMessage itemAtPosition = (FeedMessage) parent.getItemAtPosition(position);
-                Log.i("MainActivity", ""+itemAtPosition);
+                Log.i("MainActivity", "" + itemAtPosition);
                 webView.loadUrl(itemAtPosition.getLink());
             }
         });
+    }
+
+    private void initRssList() {
+        feed = getFeed();
+
+        List<FeedMessage> feedMessagesList = feed.getMessages();
+
+        messageAdapter = new FeedMessageAdapter(this, feedMessagesList);
+
+        rssListView.setAdapter(messageAdapter);
     }
 
     private Feed getFeed() {

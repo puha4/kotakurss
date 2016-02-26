@@ -5,6 +5,7 @@ import android.util.Log;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -67,8 +68,7 @@ public class RSSFeedParser extends AsyncTask<String, Void, Feed> {
     private void checkEventTypeAndSetProperty(XmlPullParser xpp, int event) throws IOException, XmlPullParserException {
         String tagText = "";
 
-        while (event != XmlPullParser.END_DOCUMENT)
-        {
+        while (event != XmlPullParser.END_DOCUMENT) {
             String tagName = xpp.getName();
 
             switch (event) {
@@ -79,7 +79,7 @@ public class RSSFeedParser extends AsyncTask<String, Void, Feed> {
                     break;
 
                 case XmlPullParser.END_TAG:
-                    if(xpp.getDepth() != TRUE_XML_ITEM_DEPTH) break;
+                    if (xpp.getDepth() != TRUE_XML_ITEM_DEPTH) break;
 
                     checkCurrentTagText(tagName, tagText);
                     break;
@@ -97,16 +97,16 @@ public class RSSFeedParser extends AsyncTask<String, Void, Feed> {
     }
 
     private void checkCurrentTagText(String tagName, String tagText) {
-        if(tagName.equals(TITLE)){
+        if (tagName.equals(TITLE)) {
             this.parsedTitle = tagText;
         }
-        if(tagName.equals(LINK)){
+        if (tagName.equals(LINK)) {
             this.parsedLink = tagText;
         }
-        if(tagName.equals(DESCRIPTION)){
+        if (tagName.equals(DESCRIPTION)) {
             this.parsedDescription = tagText;
 
-            if(isMatchImgUrlFromDescription(tagText))
+            if (isMatchImgUrlFromDescription(tagText))
                 this.parsedImgUrl = getImgUrlFromDescription(tagText);
             else {
                 this.parsedImgUrl = "";
@@ -116,7 +116,7 @@ public class RSSFeedParser extends AsyncTask<String, Void, Feed> {
 //            Log.i(LOG_TAG, getImgUrlFromDescription(tagText) +" "+ isMatchImgUrlFromDescription(tagText));
 //            Log.i(LOG_TAG, "--------------");
         }
-        if(tagName.equals(PUBDATE)){
+        if (tagName.equals(PUBDATE)) {
             this.parsedDate = tagText;
 
             addMessage();
@@ -134,7 +134,7 @@ public class RSSFeedParser extends AsyncTask<String, Void, Feed> {
         return this.feed;
     }
 
-    public boolean isMatchImgUrlFromDescription(String parsedDescription){
+    public boolean isMatchImgUrlFromDescription(String parsedDescription) {
 //        Pattern p = Pattern.compile(IMG_URL_PATTERN);
 //        Matcher m = p.matcher(parsedDescription);
 //Log.i(LOG_TAG, parsedDescription + parsedDescription.matches(IMG_URL_PATTERN));
