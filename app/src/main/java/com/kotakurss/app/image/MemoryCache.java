@@ -59,8 +59,9 @@ public class MemoryCache {
     }
 
     private void checkSize() {
-        Log.i(TAG, "cache size=" + size + " length=" + cache.size());
+        Log.i(TAG, "cache size=" + size + " limit="+ limit +" length=" + cache.size());
         if (size > limit) {
+            Log.i(TAG, "size > limit " + cache.size());
             Iterator<Map.Entry<String, Bitmap>> iter = cache.entrySet().iterator();//least recently accessed item will be the first one iterated
             while (iter.hasNext()) {
                 Map.Entry<String, Bitmap> entry = iter.next();

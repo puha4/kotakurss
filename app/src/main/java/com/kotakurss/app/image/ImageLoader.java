@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import com.kotakurss.app.R;
 
@@ -17,6 +19,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ImageLoader {
+
+    private final String LOG_TAG = ImageLoader.class.getSimpleName();
 
     MemoryCache memoryCache = new MemoryCache();
 
@@ -44,6 +48,7 @@ public class ImageLoader {
         if (bitmap != null) {
             // if image is stored in MemoryCache Map then
             // Show image in listview row
+            Log.i(LOG_TAG, url + " from cache");
             imageView.setImageBitmap(bitmap);
         } else {
             //queue Photo to download from url
@@ -141,8 +146,10 @@ public class ImageLoader {
 
         } catch (Throwable ex) {
             ex.printStackTrace();
-            if (ex instanceof OutOfMemoryError)
+            if (ex instanceof OutOfMemoryError) {
+                Log.i(LOG_TAG, "OutOfMemoryError");
                 memoryCache.clear();
+            }
             return null;
         }
     }
@@ -222,6 +229,7 @@ public class ImageLoader {
     }
 
     private void queuePhoto(String url, ImageView imageView) {
+        Log.i(LOG_TAG, "queuePhoto " + url);
         // Store image and url in PhotoToLoad object
         PhotoToLoad p = new PhotoToLoad(url, imageView);
 

@@ -1,6 +1,7 @@
 package com.kotakurss.app.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,7 @@ public class FeedMessageAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.item_layout_pro, parent, false);
         }
 
+
         FeedMessage feedMessage = getFeedMessage(position);
 
         TextView textViewTitle = (TextView) view.findViewById(R.id.title);
@@ -61,7 +63,18 @@ public class FeedMessageAdapter extends BaseAdapter {
         ImageView imageView = (ImageView) view.findViewById(R.id.picture);
 //        imageView.setImageResource(R.mipmap.android);
 
-        imageLoader.DisplayImage(feedMessage.getImgUrl(), imageView);
+        Log.i(LOG_TAG, "getView " +feedMessage.getTitle() +" "+ (imageView.getVisibility() == View.VISIBLE));
+        Log.i(LOG_TAG, "getView " +feedMessage.getImgUrl()+" "+feedMessage.getImgUrl().isEmpty());
+
+        // почему то скрывая один элемент скрываются некоторые другие
+        // по этому элемунту с img сначала жестко ставим VISIBLE
+        if(feedMessage.getImgUrl().isEmpty()) {
+            Log.i(LOG_TAG, "hide " + imageView);
+            imageView.setVisibility(View.GONE);
+        } else {
+            imageView.setVisibility(View.VISIBLE);
+            imageLoader.DisplayImage(feedMessage.getImgUrl(), imageView);
+        }
 
         return view;
     }

@@ -55,4 +55,15 @@ public class FeedMessage {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
+
+    @Override
+    public String toString() {
+        return "FeedMessage{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", link='" + link + '\'' +
+                ", date='" + date + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                '}';
+    }
 }

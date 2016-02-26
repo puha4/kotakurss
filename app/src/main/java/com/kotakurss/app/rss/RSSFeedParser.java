@@ -112,9 +112,9 @@ public class RSSFeedParser extends AsyncTask<String, Void, Feed> {
                 this.parsedImgUrl = "";
             }
 
-            Log.i(LOG_TAG, tagText);
-            Log.i(LOG_TAG, getImgUrlFromDescription(tagText) +" "+ isMatchImgUrlFromDescription(tagText));
-            Log.i(LOG_TAG, "--------------");
+//            Log.i(LOG_TAG, tagText);
+//            Log.i(LOG_TAG, getImgUrlFromDescription(tagText) +" "+ isMatchImgUrlFromDescription(tagText));
+//            Log.i(LOG_TAG, "--------------");
         }
         if(tagName.equals(PUBDATE)){
             this.parsedDate = tagText;
