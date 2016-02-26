@@ -1,9 +1,6 @@
 package com.kotakurss.app.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,22 +8,23 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.kotakurss.app.R;
-import com.kotakurss.app.image.DownloadAsyncTask;
-import com.kotakurss.app.image.ViewHolder;
+import com.kotakurss.app.image.ImageLoader;
 import com.kotakurss.app.rss.FeedMessage;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 
 public class FeedMessageAdapter extends BaseAdapter {
 
     private List<FeedMessage> list;
     private LayoutInflater layoutInflater;
+    private ImageLoader imageLoader;
+    private final String LOG_TAG = FeedMessageAdapter.class.getSimpleName();
 
     public FeedMessageAdapter(Context context, List<FeedMessage> list) {
         this.list = list;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        imageLoader = new ImageLoader(context);
     }
 
     @Override
@@ -61,10 +59,9 @@ public class FeedMessageAdapter extends BaseAdapter {
         textViewDate.setText(feedMessage.getDate());
 
         ImageView imageView = (ImageView) view.findViewById(R.id.picture);
-        imageView.setImageResource(R.mipmap.android);
-//        ViewHolder viewHolder = new ViewHolder(imageView, feedMessage.getImgUrl());
+//        imageView.setImageResource(R.mipmap.android);
 
-//        new DownloadAsyncTask().execute(viewHolder);
+        imageLoader.DisplayImage(feedMessage.getImgUrl(), imageView);
 
         return view;
     }

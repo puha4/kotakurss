@@ -18,7 +18,7 @@ public class RSSFeedParser extends AsyncTask<String, Void, Feed> {
     private final String LINK = "link";
     private final String DESCRIPTION = "description";
     private final String PUBDATE = "pubDate";
-    private static final String IMG_URL_PATTERN = ".*\\<img\\s*src\\s*=\\s*\\\"(.*?)\\\".*";
+    private static final String IMG_URL_PATTERN = ".*\\<img\\s*src\\s*=\\s*\\\"(.*?)\\\"(.|\\s)*";
     private static final int MATCHED_GROUP = 1;
 
     private final int CURRENT_URL = 0;
@@ -111,6 +111,10 @@ public class RSSFeedParser extends AsyncTask<String, Void, Feed> {
             else {
                 this.parsedImgUrl = "";
             }
+
+            Log.i(LOG_TAG, tagText);
+            Log.i(LOG_TAG, getImgUrlFromDescription(tagText) +" "+ isMatchImgUrlFromDescription(tagText));
+            Log.i(LOG_TAG, "--------------");
         }
         if(tagName.equals(PUBDATE)){
             this.parsedDate = tagText;
