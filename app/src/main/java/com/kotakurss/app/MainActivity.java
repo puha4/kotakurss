@@ -2,8 +2,12 @@ package com.kotakurss.app;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.WebView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.kotakurss.app.adapter.FeedMessageAdapter;
@@ -21,6 +25,7 @@ public class MainActivity extends Activity {
     static final String RSS_URL = "http://kotaku.com/rss";
     private Feed feed;
     private ListView rssListView;
+    private WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         rssListView = (ListView) findViewById(R.id.rssListView);
+        webView = (WebView) findViewById(R.id.webView);
+        webView.getSettings().setJavaScriptEnabled(true);
 
         feed = getFeed();
 
@@ -36,6 +43,16 @@ public class MainActivity extends Activity {
         FeedMessageAdapter messageAdapter = new FeedMessageAdapter(this, feedMessagesList);
 
         rssListView.setAdapter(messageAdapter);
+
+
+        rssListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FeedMessage itemAtPosition = (FeedMessage) parent.getItemAtPosition(position);
+                Log.i("MainActivity", ""+itemAtPosition);
+                webView.loadUrl(itemAtPosition.getLink());
+            }
+        });
     }
 
     private Feed getFeed() {
