@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import com.kotakurss.app.adapter.FeedMessageAdapter;
 import com.kotakurss.app.fragment.FeedListFragment;
+import com.kotakurss.app.fragment.FragmentChangeListener;
 import com.kotakurss.app.fragment.ViewerFragment;
 import com.kotakurss.app.rss.Feed;
 import com.kotakurss.app.rss.FeedMessage;
@@ -29,9 +30,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements FragmentChangeListener {
 
-    static final String RSS_URL = "http://kotaku.com/rss";
+    private static final String RSS_URL = "http://kotaku.com/rss";
     private Feed feed;
     private ListView rssListView;
     private WebView webView;
@@ -53,56 +54,31 @@ public class MainActivity extends FragmentActivity {
         viewerFragment = new ViewerFragment();
         manager = getSupportFragmentManager();
 
-        rssListView = (ListView) findViewById(R.id.rssListView);
-        inputSearch = (EditText) findViewById(R.id.searchInput);
+
 //        webView = (WebView) findViewById(R.id.webView);
 //        webView.getSettings().setJavaScriptEnabled(true);
 
-        initRssList();
+//        initRssList();
+//        initSearch();
 
-        inputSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                messageAdapter.getFilter(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        initRssListOnClickListener();
-
-
+        if(savedInstanceState == null) {
+            manager.beginTransaction().add(R.id.container, new FeedListFragment()).commit();
+        }
     }
 
-    private void initRssListOnClickListener() {
-        rssListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                FeedMessage itemAtPosition = (FeedMessage) parent.getItemAtPosition(position);
-//                Log.i("MainActivity", "" + itemAtPosition);
-//                webView.loadUrl(itemAtPosition.getLink());
-
-                Fragment f = new ViewerFragment();
-
-                transaction = manager.beginTransaction();
-                transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-                transaction.replace(R.id.feedlist_fragment, f);
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
+    @Override
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();;
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+        fragmentTransaction.replace(R.id.container, fragment, fragment.toString());
+        fragmentTransaction.addToBackStack(fragment.toString());
+        fragmentTransaction.commit();
     }
 
     private void initRssList() {
+
+        rssListView = (ListView) findViewById(R.id.rssListView);
         feed = getFeed();
 
         List<FeedMessage> feedMessagesList = feed.getMessages();
@@ -110,6 +86,41 @@ public class MainActivity extends FragmentActivity {
         messageAdapter = new FeedMessageAdapter(this, feedMessagesList);
 
         rssListView.setAdapter(messageAdapter);
+
+        rssListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                FeedMessage itemAtPosition = (FeedMessage) parent.getItemAtPosition(position);
+//                Log.i("MainActivity", "" + itemAtPosition);
+//                webView.loadUrl(itemAtPosition.getLink());
+
+//                Fragment f = new ViewerFragment();
+//
+//                transaction = manager.beginTransaction();
+//                transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+//                transaction.replace(R.id.feedlist_fragment, f);
+//                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//                transaction.addToBackStack(null);
+//                transaction.commit();
+            }
+        });
+    }
+
+    private void initSearch() {
+        inputSearch = (EditText) findViewById(R.id.searchInput);
+
+        inputSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                messageAdapter.getFilter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
     private Feed getFeed() {

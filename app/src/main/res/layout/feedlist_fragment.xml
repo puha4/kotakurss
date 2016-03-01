@@ -12,11 +12,11 @@
     <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/searchInput" android:layout_alignParentEnd="true"/>
+            android:id="@+id/searchInput" />
     <ListView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/rssListView"
-            android:layout_alignParentStart="true" android:layout_below="@+id/searchInput"/>
+            android:layout_below="@+id/searchInput"/>
 
 </RelativeLayout>
