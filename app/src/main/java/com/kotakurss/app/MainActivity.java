@@ -2,6 +2,10 @@ package com.kotakurss.app;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,6 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.kotakurss.app.adapter.FeedMessageAdapter;
+import com.kotakurss.app.fragment.FeedListFragment;
+import com.kotakurss.app.fragment.ViewerFragment;
 import com.kotakurss.app.rss.Feed;
 import com.kotakurss.app.rss.FeedMessage;
 import com.kotakurss.app.rss.RSSFeedParser;
@@ -23,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     static final String RSS_URL = "http://kotaku.com/rss";
     private Feed feed;
@@ -32,15 +38,25 @@ public class MainActivity extends Activity {
     private EditText inputSearch;
     private FeedMessageAdapter messageAdapter;
 
+    private FeedListFragment feedListFragment;
+    private ViewerFragment viewerFragment;
+
+    private FragmentManager manager;
+    private FragmentTransaction transaction;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        feedListFragment = new FeedListFragment();
+        viewerFragment = new ViewerFragment();
+        manager = getSupportFragmentManager();
+
         rssListView = (ListView) findViewById(R.id.rssListView);
         inputSearch = (EditText) findViewById(R.id.searchInput);
-        webView = (WebView) findViewById(R.id.webView);
-        webView.getSettings().setJavaScriptEnabled(true);
+//        webView = (WebView) findViewById(R.id.webView);
+//        webView.getSettings().setJavaScriptEnabled(true);
 
         initRssList();
 
@@ -61,13 +77,27 @@ public class MainActivity extends Activity {
             }
         });
 
+        initRssListOnClickListener();
 
+
+    }
+
+    private void initRssListOnClickListener() {
         rssListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FeedMessage itemAtPosition = (FeedMessage) parent.getItemAtPosition(position);
-                Log.i("MainActivity", "" + itemAtPosition);
-                webView.loadUrl(itemAtPosition.getLink());
+//                FeedMessage itemAtPosition = (FeedMessage) parent.getItemAtPosition(position);
+//                Log.i("MainActivity", "" + itemAtPosition);
+//                webView.loadUrl(itemAtPosition.getLink());
+
+                Fragment f = new ViewerFragment();
+
+                transaction = manager.beginTransaction();
+                transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+                transaction.replace(R.id.feedlist_fragment, f);
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
     }
