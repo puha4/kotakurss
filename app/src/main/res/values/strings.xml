@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KotakuRSS</string>
+    <string name="app_name">Kotaku RSS Reader</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

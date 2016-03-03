@@ -5,9 +5,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import com.kotakurss.app.fragment.FeedListFragment;
 import com.kotakurss.app.fragment.FragmentChangeListener;
 import com.kotakurss.app.fragment.ViewerFragment;
@@ -15,17 +19,26 @@ import com.kotakurss.app.fragment.ViewerFragment;
 public class MainActivity extends FragmentActivity implements FragmentChangeListener {
 
     private FragmentManager manager;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initToolbar();
+
         manager = getSupportFragmentManager();
 
         if(savedInstanceState == null) {
             manager.beginTransaction().add(R.id.container, new FeedListFragment()).commit();
         }
+    }
+
+    private void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
+
     }
 
     @Override
