@@ -6,4 +6,5 @@
     <color name="mainBackground">#e2e2e2</color>
     <color name="colorText">#aa000000</color>
     <color name="colorTextDate">#55000000</color>
+    <color name="swipeRefreshColor">#f58233</color>
 </resources>

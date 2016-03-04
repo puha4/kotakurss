@@ -2,6 +2,7 @@ package com.kotakurss.app.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -25,7 +26,7 @@ public class FeedListFragment extends Fragment {
     private Feed feed;
     private View view;
     private FeedMessageAdapter messageAdapter;
-    private EditText inputSearch;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private static final String RSS_URL = "http://kotaku.com/rss";
 
@@ -33,13 +34,29 @@ public class FeedListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.feedlist_fragment, container, false);
 
-        initRssList();
-        initSearch();
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.swipeRefreshColor);
+
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                initRssList();
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initRssList();
+            }
+        });
 
         return view;
     }
 
     private void initRssList() {
+        swipeRefreshLayout.setRefreshing(true);
+
         rssListView = (ListView) view.findViewById(R.id.rssListView);
         feed = getFeed();
 
@@ -60,25 +77,12 @@ public class FeedListFragment extends Fragment {
                 showOtherFragment(bundle);
             }
         });
+
+        swipeRefreshLayout.setRefreshing(false);
     }
 
-    private void initSearch() {
-        inputSearch = (EditText) view.findViewById(R.id.searchInput);
-
-        inputSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                messageAdapter.getFilter(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+    public void setSearchQuery(String searchQuery) {
+        messageAdapter.getFilter(searchQuery);
     }
 
     private Feed getFeed() {
