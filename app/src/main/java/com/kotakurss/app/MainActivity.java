@@ -7,13 +7,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import com.kotakurss.app.fragment.FeedListFragment;
 import com.kotakurss.app.fragment.FragmentChangeListener;
 
-public class MainActivity extends FragmentActivity implements FragmentChangeListener {
+public class MainActivity extends AppCompatActivity implements FragmentChangeListener {
 
     private FragmentManager manager;
     private Toolbar toolbar;
@@ -40,6 +41,8 @@ public class MainActivity extends FragmentActivity implements FragmentChangeList
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
         toolbar.inflateMenu(R.menu.menu_main);
+//        setSupportActionBar(toolbar);
+
     }
 
     private void initSearch() {
