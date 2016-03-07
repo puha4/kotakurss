@@ -10,6 +10,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import com.kotakurss.app.fragment.FeedListFragment;
 import com.kotakurss.app.fragment.FragmentChangeListener;
@@ -28,21 +30,41 @@ public class MainActivity extends AppCompatActivity implements FragmentChangeLis
         feedListFragment = new FeedListFragment();
 
         initToolbar();
-        initSearch();
 
         manager = getSupportFragmentManager();
 
         if(savedInstanceState == null) {
-            manager.beginTransaction().add(R.id.container,feedListFragment).commit();
+            manager.beginTransaction().add(R.id.container, feedListFragment).commit();
         }
     }
 
     private void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
-        toolbar.inflateMenu(R.menu.menu_main);
-//        setSupportActionBar(toolbar);
+//        toolbar.inflateMenu(R.menu.menu_main);
+        setSupportActionBar(toolbar);
+    }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        initSearch();
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem)
+    {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(menuItem);
+        }
     }
 
     private void initSearch() {
@@ -61,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChangeLis
             }
         });
     }
+
 
     @Override
     public void replaceFragment(Fragment fragment) {

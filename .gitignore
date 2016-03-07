@@ -1,7 +1,7 @@
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
+# /.idea/workspace.xml
+# /.idea/libraries
 .DS_Store
 /build
 /captures
@@ -55,7 +55,7 @@ gen-external-apklibs
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
-.idea/*
+/.idea/*
 
 ## File-based project format:
 *.iws
