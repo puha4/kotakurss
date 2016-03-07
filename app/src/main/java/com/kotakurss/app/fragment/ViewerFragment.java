@@ -21,20 +21,19 @@ public class ViewerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.webview_fragment, container, false);
 
-        webView = (WebView) view.findViewById(R.id.webView);
-        webView.getSettings().setJavaScriptEnabled(true);
-
         setHasOptionsMenu(true);
-
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-
-        initProgressBar();
+        showBackToolbarButton();
 
         url = getArguments().getString("url");
-        webView.loadUrl(url);
+        initWebView(url);
+        initProgressBar();
 
         return view;
+    }
+
+    private void showBackToolbarButton() {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     @Override
@@ -59,5 +58,11 @@ public class ViewerFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void initWebView(String url) {
+        webView = (WebView) view.findViewById(R.id.webView);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl(url);
     }
 }

@@ -22,7 +22,7 @@ public class FeedMessageAdapter extends BaseAdapter {
     private ArrayList<FeedMessage> container;
     private LayoutInflater layoutInflater;
     private ImageLoader imageLoader;
-    private final String LOG_TAG = FeedMessageAdapter.class.getSimpleName();
+    private final String LOG_TAG = "FeedMessageAdapter";
 
     public FeedMessageAdapter(Context context, List<FeedMessage> list) {
         this.list = list;
@@ -67,15 +67,13 @@ public class FeedMessageAdapter extends BaseAdapter {
         textViewDate.setText(feedMessage.getDate());
 
         ImageView imageView = (ImageView) view.findViewById(R.id.picture);
-//        imageView.setImageResource(R.mipmap.android);
 
-        Log.i(LOG_TAG, "getView " + feedMessage.getTitle() + " " + (imageView.getVisibility() == View.VISIBLE));
-        Log.i(LOG_TAG, "getView " + feedMessage.getImgUrl() + " " + feedMessage.getImgUrl().isEmpty());
+//        Log.i(LOG_TAG, "getView " + feedMessage.getTitle() + " " + (imageView.getVisibility() == View.VISIBLE));
+//        Log.i(LOG_TAG, "getView " + feedMessage.getImgUrl() + " " + feedMessage.getImgUrl().isEmpty());
 
         // почему то скрывая один элемент скрываются некоторые другие
         // по этому элемунту с img сначала жестко ставим VISIBLE
         if (feedMessage.getImgUrl().isEmpty()) {
-            Log.i(LOG_TAG, "hide " + imageView);
             imageView.setVisibility(View.GONE);
         } else {
             imageView.setVisibility(View.VISIBLE);

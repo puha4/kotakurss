@@ -1,16 +1,15 @@
 package com.kotakurss.app;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.kotakurss.app.fragment.FeedListFragment;
@@ -41,8 +40,14 @@ public class MainActivity extends AppCompatActivity implements FragmentChangeLis
     private void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
+        setToolbarElevation(12);
 //        toolbar.inflateMenu(R.menu.menu_main);
         setSupportActionBar(toolbar);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setToolbarElevation(int elevation) {
+        toolbar.setElevation(elevation);
     }
 
 
@@ -83,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements FragmentChangeLis
             }
         });
     }
-
 
     @Override
     public void replaceFragment(Fragment fragment) {

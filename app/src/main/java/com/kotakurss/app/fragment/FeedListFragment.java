@@ -4,15 +4,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
-
 import com.kotakurss.app.R;
 import com.kotakurss.app.adapter.FeedMessageAdapter;
 import com.kotakurss.app.rss.Feed;
@@ -35,9 +31,19 @@ public class FeedListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.feedlist_fragment, container, false);
 
+        hideBackToolbarButton();
+
+        initSwipeRefreshLayout();
+
+        return view;
+    }
+
+    private void hideBackToolbarButton() {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(false);
+    }
 
+    private void initSwipeRefreshLayout() {
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.swipeRefreshColor);
 
@@ -48,14 +54,16 @@ public class FeedListFragment extends Fragment {
             }
         });
 
+        setOnSwipeRefreshListener();
+    }
+
+    private void setOnSwipeRefreshListener() {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 initRssList();
             }
         });
-
-        return view;
     }
 
     private void initRssList() {
@@ -63,13 +71,17 @@ public class FeedListFragment extends Fragment {
 
         rssListView = (ListView) view.findViewById(R.id.rssListView);
         feed = getFeed();
-
         List<FeedMessage> feedMessagesList = feed.getMessages();
 
         messageAdapter = new FeedMessageAdapter(this.getActivity().getApplicationContext(), feedMessagesList);
-
         rssListView.setAdapter(messageAdapter);
 
+        setOnListItemClickListener();
+
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private void setOnListItemClickListener() {
         rssListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -81,8 +93,6 @@ public class FeedListFragment extends Fragment {
                 showOtherFragment(bundle);
             }
         });
-
-        swipeRefreshLayout.setRefreshing(false);
     }
 
     public void setSearchQuery(String searchQuery) {
