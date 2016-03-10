@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:card="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginTop="4dp"
+              android:layout_marginBottom="2dp"
+              android:layout_marginLeft="12dp"
+              android:layout_marginRight="12dp">
+
+    <android.support.v7.widget.CardView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/cardView"
+            card:cardElevation="2dp"
+            card:cardUseCompatPadding="true">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="horizontal">
+
+            <ImageView
+                    android:id="@+id/messagePicture"
+                    android:layout_width="110dp"
+                    android:layout_height="80dp"
+                    android:contentDescription="desc"/>
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp">
+
+                <TextView
+                        android:id="@+id/messageTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="8pt"
+                        android:textColor="@color/colorTextBlack"
+                        android:text="fdfdfdf"
+                        android:paddingBottom="5dp" />
+
+                <TextView
+                        android:id="@+id/messageDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="30303030"
+                        android:textColor="@color/colorTextDate"
+                        android:textStyle="italic"
+                        android:paddingBottom="5dp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
