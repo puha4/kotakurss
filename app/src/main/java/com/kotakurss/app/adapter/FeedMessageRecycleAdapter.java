@@ -65,8 +65,7 @@ public class FeedMessageRecycleAdapter extends RecyclerView.Adapter<FeedMessageR
         });
     }
 
-    public void showOtherFragment(Bundle bundle)
-    {
+    public void showOtherFragment(Bundle bundle) {
         Fragment fr = new ViewerFragment();
         fr.setArguments(bundle);
 

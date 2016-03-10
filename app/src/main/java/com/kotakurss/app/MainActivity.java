@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChangeLis
 
         manager = getSupportFragmentManager();
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             manager.beginTransaction().add(R.id.container, feedListFragment).commit();
         }
     }
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChangeLis
     private void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
-        setToolbarElevation(12);
+        setToolbarElevation(10);
 //        toolbar.inflateMenu(R.menu.menu_main);
         setSupportActionBar(toolbar);
     }
@@ -61,8 +61,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChangeLis
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem)
-    {
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
