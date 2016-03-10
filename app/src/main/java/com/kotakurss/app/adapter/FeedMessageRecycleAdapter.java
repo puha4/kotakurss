@@ -16,6 +16,8 @@ import com.kotakurss.app.fragment.ViewerFragment;
 import com.kotakurss.app.image.ImageLoader;
 import com.kotakurss.app.rss.FeedMessage;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -46,7 +48,9 @@ public class FeedMessageRecycleAdapter extends RecyclerView.Adapter<FeedMessageR
     public void onBindViewHolder(FeedViewHolder feedViewHolder, int i) {
         final FeedMessage feedMessage = list.get(i);
         feedViewHolder.title.setText(feedMessage.getTitle());
-        feedViewHolder.date.setText(feedMessage.getDate());
+
+        String formattedDate = getFormattedDate(feedMessage.getDate());
+        feedViewHolder.date.setText(formattedDate);
 
         if (feedMessage.getImgUrl().isEmpty()) {
             feedViewHolder.imageView.setVisibility(View.GONE);
@@ -63,6 +67,21 @@ public class FeedMessageRecycleAdapter extends RecyclerView.Adapter<FeedMessageR
                 showOtherFragment(bundle);
             }
         });
+    }
+
+    private String getFormattedDate(String date) {
+        SimpleDateFormat fromFormat = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss z", Locale.US);
+        SimpleDateFormat toFormat = new SimpleDateFormat("dd MMM yyyy hh:mm", Locale.US);
+
+        String formattedDate = date;
+
+        try {
+            formattedDate = toFormat.format(fromFormat.parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return formattedDate;
     }
 
     public void showOtherFragment(Bundle bundle) {
